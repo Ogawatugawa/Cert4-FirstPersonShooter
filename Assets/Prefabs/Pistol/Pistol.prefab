@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 990452169192715582}
+  - component: {fileID: 7769261428839374836}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -29,9 +30,33 @@ Transform:
   m_Children:
   - {fileID: 2237678714453711120}
   - {fileID: 7189021747336109945}
+  - {fileID: 308228128357956687}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7769261428839374836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285687328542060302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb0b10e50865f04aaf3982b93f068fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  attackRange: 10
+  attackRate: 1
+  canAttack: 0
+  maxReserve: 300
+  maxClip: 30
+  spread: 2
+  recoil: 1
+  shotOrigin: {fileID: 308228128357956687}
+  projectilePrefab: {fileID: 2746026287328505846, guid: 6b365429ef5d33c4980b98a71a04f0b3,
+    type: 3}
 --- !u!1 &2244748956809048700
 GameObject:
   m_ObjectHideFlags: 0
@@ -43,7 +68,6 @@ GameObject:
   - component: {fileID: 2237678714453711120}
   - component: {fileID: 5216112737268894279}
   - component: {fileID: 907074747659183350}
-  - component: {fileID: 330214948839593432}
   m_Layer: 8
   m_Name: Barrel
   m_TagString: Untagged
@@ -110,19 +134,36 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &330214948839593432
-BoxCollider:
+--- !u!1 &2736332860707313756
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2244748956809048700}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 308228128357956687}
+  m_Layer: 0
+  m_Name: ShotOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &308228128357956687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2736332860707313756}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.176, z: 0.598}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 990452169192715582}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5614135147613811156
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +175,6 @@ GameObject:
   - component: {fileID: 7189021747336109945}
   - component: {fileID: 3042252948423935154}
   - component: {fileID: 7240386314873102876}
-  - component: {fileID: 1642550521806983296}
   m_Layer: 8
   m_Name: Handle
   m_TagString: Untagged
@@ -201,16 +241,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &1642550521806983296
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5614135147613811156}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

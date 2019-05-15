@@ -6,10 +6,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float runSpeed = 8f;
-    public float walkSpeed = 6f, gravity = 10f, jumpHeight = 15f, groundRayDistance = 1.1f, sprintFactor = 2f;
+    public float walkSpeed = 6f, gravity = -10f, jumpHeight = 15f, currentJumpHeight, groundRayDistance = 1.1f, dashSpeed = 15f, dashDistance = 5f;
 
     private CharacterController charC;
     private Vector3 motion; // Movement offset per frame
+    private bool isJumping = false, isDashing = false;
+    private float currentSpeed;
+    private Vector3 dashStartPos;
 
     private void Start()
     {
@@ -20,69 +23,122 @@ public class Player : MonoBehaviour
     {
         float inputH = Input.GetAxis("Horizontal");
         float inputV = Input.GetAxis("Vertical");
+        bool inputRun = Input.GetKey(KeyCode.LeftShift);
+        bool inputJump = Input.GetButtonDown("Jump");
 
-        //if (Input.GetKey(KeyCode.LeftShift))
-        //{
-        //    inputH *= sprintFactor;
-        //    inputV *= sprintFactor;
-        //}
-
-        Move(inputH, inputV);
-
-        if (IsGrounded())
+        Vector3 inputDir = new Vector3(inputH, 0, inputV);
+        inputDir = transform.TransformDirection(inputDir);
+        // If input exceeds 1 (i.e. if horizontal and vertical are pressed at the same time) then 
+        if (inputDir.magnitude > 1)
         {
-            if (Input.GetButtonDown("Jump"))
+            // Normalize to 1
+            inputDir.Normalize();
+        }
+
+        if (inputRun)
+        {
+            currentSpeed = runSpeed;
+        }
+
+        else
+        {
+            currentSpeed = walkSpeed;
+        }
+
+        if (isDashing)
+        {
+            print("Is dashing");
+            float distance = Vector3.Distance(dashStartPos, transform.position);
+            if (distance < dashDistance)
             {
-                motion.y = jumpHeight;
+                currentSpeed = dashSpeed;
+            }
+
+            else
+            {
+                currentSpeed = walkSpeed;
+                isDashing = false;
             }
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            Sprint(inputH, inputV);
-        }
+        Move(inputDir.x, inputDir.z, currentSpeed);
 
-        motion.y -= gravity * Time.deltaTime;
+        // If object is grounded
+        if (charC.isGrounded)
+        {
+            // And jump is pressed?
+            if (inputJump)
+            {
+                Jump(jumpHeight);
+            }
+
+            // Cancel the y velocity;
+            motion.y = 0f;
+
+            // Is jumping bool set to true?
+            if (isJumping)
+            {
+                // Set jump height
+                motion.y = currentJumpHeight;
+                // Reset back to false
+                isJumping = false;
+            }
+        }
+        motion.y += gravity * Time.deltaTime;
         charC.Move(motion * Time.deltaTime);
     }
 
-    bool IsGrounded()
-    {
-        // Raycast below the player
-        Ray groundRay = new Ray(transform.position, -transform.up);
-        RaycastHit hit;
-        // If hitting something
-        if (Physics.Raycast(groundRay, out hit, groundRayDistance))
-        {
-            // Return true
-            return true;
-        }
-        // Else
-        // Return false
-        return false;
-    }
-
-    private void Move(float inputH, float inputV)
+    private void Move(float inputH, float inputV, float speed)
     {
         Vector3 direction = new Vector3(inputH, 0f, inputV);
 
-        direction = transform.TransformDirection(direction);
-
-        float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed; 
-
-        motion.x = direction.x * currentSpeed;
-        motion.z = direction.z * currentSpeed;
+        motion.x = direction.x * speed;
+        motion.z = direction.z * speed;
     }
 
-    void Sprint(float inputH, float inputV)
+    public void Walk (float inputH, float inputV)
     {
-        Vector3 direction = new Vector3(inputH, 0f, inputV);
-
-        direction = transform.TransformDirection(direction);
-
-        motion.x = direction.x * runSpeed;
-        motion.z = direction.z * runSpeed;
+        Move(inputH, inputV, walkSpeed);
     }
+
+    public void Run (float inputH, float inputV)
+    {
+        Move(inputH, inputV, runSpeed);
+    }
+
+    public void Jump (float height)
+    {
+        isJumping = true;
+        currentJumpHeight = height;
+    }
+
+    public void Dash()
+    {
+        isDashing = true;
+        dashStartPos = transform.position;
+    }
+
+    //void Sprint(float inputH, float inputV)
+    //{
+    //    Vector3 direction = new Vector3(inputH, 0f, inputV);
+
+    //    direction = transform.TransformDirection(direction);
+
+    //    motion.x = direction.x * runSpeed;
+    //    motion.z = direction.z * runSpeed;
+    //}
+    
+    //private void Move(float inputH, float inputV, float speed)
+    //{
+    //    Vector3 direction = new Vector3(inputH, 0f, inputV);
+
+    //    direction = transform.TransformDirection(direction);
+
+    //    float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+
+    //    motion.x = direction.x * currentSpeed;
+    //    motion.z = direction.z * currentSpeed;
+    //}
 
     //#region Variables
     //[Header("Movement")]
