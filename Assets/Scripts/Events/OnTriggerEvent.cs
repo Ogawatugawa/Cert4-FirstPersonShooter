@@ -27,7 +27,7 @@ public class OnTriggerEvent : MonoBehaviour
     {
         if (other.tag == hitTag || hitTag == "")
         {
-            onEnter.Invoke();
+            onStay.Invoke();
         }
     }
 
@@ -35,7 +35,7 @@ public class OnTriggerEvent : MonoBehaviour
     {
         if (other.tag == hitTag || hitTag == "")
         {
-            onEnter.Invoke();
+            onExit.Invoke();
         }
     }
 }
