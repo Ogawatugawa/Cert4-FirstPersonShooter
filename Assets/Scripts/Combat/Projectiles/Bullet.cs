@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : Projectile
 {
+    public int damage = 10;
     public float speed = 10f;
     public Transform line;
     public GameObject effectPrefab;
@@ -29,15 +30,18 @@ public class Bullet : Projectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (effectPrefab)
-        {
+
             // Get contact point
             // ContactPoint is a built-in variable, and contacts is an array holding everything the collider has hit
             ContactPoint contact = collision.contacts[0];
             // Spawn the effect and rotate to contact normal
             // We'll need to use Quaternion.LookRotation to turn contact.normal from Vector3 to a Quaternion
-            Instantiate(effectPrefab, contact.point, Quaternion.LookRotation(contact.normal));
-        }
+            //Instantiate(effectPrefab, contact.point, Quaternion.LookRotation(contact.normal));
+            Enemy enemy = collision.collider.GetComponent<Enemy>();
+            if (enemy)
+            {
+                enemy.TakeDamage(damage);
+            }
 
         //Destroy bullet
         Destroy(gameObject);

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   attackRange: 10
-  attackRate: 1
+  attackRate: 10
   canAttack: 0
   maxReserve: 300
   maxClip: 30
